@@ -4,42 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="80419b16-4d26-4e46-847c-5a7d8e241eef" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/aws.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/bulletinerEB.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/bulletins.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/rds.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/schema.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/service_db.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/database/setup_db.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/category_markers.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/countries.geojson" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/countries.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/css/leaflet.extra-markers.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/img/markers_default.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/img/markers_default@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/img/markers_shadow.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/img/markers_shadow@2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/js/categoryMarkers.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/js/categoryTranslations.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/js/leaflet.extra-markers.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/js/leaflet.extra-markers.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/js/leaflet.extra-markers.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/leaflet.extra-markers.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/static/macedonia.geojson" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/templates/backup.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/templates/index.html" afterDir="false" />
+    <list default="true" id="80419b16-4d26-4e46-847c-5a7d8e241eef" name="Changes" comment="root app.py made as the now former web/app.py &gt;:(">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/web/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/category_markers.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/category_markers.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/countries.geojson" beforeDir="false" afterPath="$PROJECT_DIR$/static/countries.geojson" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/countries.zip" beforeDir="false" afterPath="$PROJECT_DIR$/static/countries.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/css/leaflet.extra-markers.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/leaflet.extra-markers.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/img/markers_default.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/markers_default.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/img/markers_default@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/markers_default@2x.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/img/markers_shadow.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/markers_shadow.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/img/markers_shadow@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/markers_shadow@2x.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/js/categoryMarkers.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/categoryMarkers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/js/categoryTranslations.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/categoryTranslations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/js/leaflet.extra-markers.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/leaflet.extra-markers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/js/leaflet.extra-markers.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/leaflet.extra-markers.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/js/leaflet.extra-markers.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/leaflet.extra-markers.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/leaflet.extra-markers.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/static/leaflet.extra-markers.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/static/macedonia.geojson" beforeDir="false" afterPath="$PROJECT_DIR$/static/macedonia.geojson" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/templates/backup.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +39,19 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Flask Main" />
+        <option value="Python Script" />
       </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
     </option>
   </component>
   <component name="Git.Settings">
@@ -67,10 +68,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Flask server.Flask (app.py).executor": "Run",
     "Flask server.Flask (web/app.py).executor": "Run",
     "Python.setup_db.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "deploy",
     "last_opened_file_path": "D:/Projects/bulletiner/bulletinerEB/database",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -85,8 +87,13 @@
       <recent name="D:\Projects\bulletiner\bulletinerEB\database" />
       <recent name="D:\Projects\bulletiner\bulletinerEB\web" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Projects\bulletiner\bulletinerEB" />
+      <recent name="D:\Projects\bulletiner\bulletinerEB\templates" />
+      <recent name="D:\Projects\bulletiner\bulletinerEB\static" />
+    </key>
   </component>
-  <component name="RunManager" selected="Flask server.Flask (web/app.py)">
+  <component name="RunManager" selected="Flask server.Flask (app.py)">
     <configuration name="setup_db" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="bulletinerEB" />
       <option name="ENV_FILES" value="" />
@@ -110,6 +117,22 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Flask (app.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="bulletinerEB" />
+      <option name="target" value="$PROJECT_DIR$/app.py" />
+      <option name="targetType" value="PATH" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
     <configuration name="Flask (web/app.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
       <module name="bulletinerEB" />
       <option name="target" value="$PROJECT_DIR$/web/app.py" />
@@ -118,7 +141,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -134,7 +157,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -144,6 +167,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Flask server.Flask (app.py)" />
         <item itemvalue="Flask server.Flask (web/app.py)" />
         <item itemvalue="Python.setup_db" />
       </list>
@@ -165,15 +189,110 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1723025215508</updated>
-      <workItem from="1723025221400" duration="2080000" />
+      <workItem from="1723025221400" duration="12732000" />
     </task>
+    <task id="LOCAL-00001" summary="init commit">
+      <option name="closed" value="true" />
+      <created>1723037975568</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1723037975568</updated>
+    </task>
+    <task id="LOCAL-00002" summary="added requirements.txt">
+      <option name="closed" value="true" />
+      <created>1723038638636</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1723038638636</updated>
+    </task>
+    <task id="LOCAL-00003" summary="config.py removed function">
+      <option name="closed" value="true" />
+      <created>1723042059403</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1723042059403</updated>
+    </task>
+    <task id="LOCAL-00004" summary="added application.py just for testing">
+      <option name="closed" value="true" />
+      <created>1723042340960</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1723042340960</updated>
+    </task>
+    <task id="LOCAL-00005" summary="edited application.py just for testing">
+      <option name="closed" value="true" />
+      <created>1723042896568</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1723042896568</updated>
+    </task>
+    <task id="LOCAL-00006" summary="edited #2 application.py just for testing">
+      <option name="closed" value="true" />
+      <created>1723043972756</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1723043972756</updated>
+    </task>
+    <task id="LOCAL-00007" summary="edited #3 application.py just for testing">
+      <option name="closed" value="true" />
+      <created>1723044337262</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1723044337262</updated>
+    </task>
+    <task id="LOCAL-00008" summary="web/app.py made for main call on WSGI">
+      <option name="closed" value="true" />
+      <created>1723044856452</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1723044856452</updated>
+    </task>
+    <task id="LOCAL-00009" summary="removed config.config from app">
+      <option name="closed" value="true" />
+      <created>1723056037363</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1723056037363</updated>
+    </task>
+    <task id="LOCAL-00010" summary="root app.py made as the now former web/app.py &gt;:(">
+      <option name="closed" value="true" />
+      <created>1723057131983</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1723057131983</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init commit" />
+    <MESSAGE value="added requirements.txt" />
+    <MESSAGE value="config.py removed function" />
+    <MESSAGE value="added application.py just for testing" />
+    <MESSAGE value="edited application.py just for testing" />
+    <MESSAGE value="edited #2 application.py just for testing" />
+    <MESSAGE value="edited #3 application.py just for testing" />
+    <MESSAGE value="web/app.py made for main call on WSGI" />
+    <MESSAGE value="removed config.config from app" />
+    <MESSAGE value="root app.py made as the now former web/app.py &gt;:(" />
+    <option name="LAST_COMMIT_MESSAGE" value="root app.py made as the now former web/app.py &gt;:(" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/bulletinerEB$Flask__web_app_py_.coverage" NAME="Flask (web/app.py) Coverage Results" MODIFIED="1723037757505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/bulletinerEB$Flask__web_app_py_.coverage" NAME="Flask (web/app.py) Coverage Results" MODIFIED="1723055983617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/bulletinerEB$setup_db.coverage" NAME="setup_db Coverage Results" MODIFIED="1723025893651" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/database" />
+    <SUITE FILE_PATH="coverage/bulletinerEB$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1723057734265" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

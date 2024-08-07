@@ -1,6 +1,4 @@
 import os
-from flask import Flask, render_template, jsonify
-from database import service_db
 # from web import create_app
 from flask import Flask
 
@@ -14,7 +12,6 @@ def create_app():
     with app.app_context():
         # Import parts of our application
         # from . import routes  # This should ensure routes are registered
-        from web import routes
 
         # Print registered routes for debugging
         print(app.url_map)
