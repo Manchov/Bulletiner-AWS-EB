@@ -12,6 +12,7 @@ def create_app():
     with app.app_context():
         # Import parts of our application
         # from . import routes  # This should ensure routes are registered
+        import routes
 
         # Print registered routes for debugging
         print(app.url_map)
