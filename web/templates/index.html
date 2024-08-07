@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Police Bulletins</title>
+    <!--    "{{ url_for('static', filename='asdf.css')}}"-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.extra-markers.min.css')}}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        .controls-container {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            display: flex;
+            gap: 10px;
+        }
+
+        .controls-container input {
+            padding: 5px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .flatpickr-calendar {
+            font-family: 'Roboto', sans-serif;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .flatpickr-months {
+            background: #ffffff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .flatpickr-day {
+            border-radius: 3px;
+            color: #333;
+        }
+
+        .flatpickr-day:hover, .flatpickr-day:focus {
+            background: #ff7800;
+            color: #fff;
+        }
+
+        .flatpickr-day.today {
+            background: #ff7800;
+            color: #fff;
+        }
+
+        .flatpickr-day.selected {
+            background: #ff7800;
+            color: #fff;
+        }
+
+        .pull-down-list {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            max-height: 80%;
+            overflow-y: auto;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .pull-down-list.active {
+            transform: translateY(0);
+        }
+
+        .list-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .handle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 20px;
+            background: #ff7800;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+<div class="controls-container">
+    <input type="text" id="search" placeholder="Search bulletins...">
+    <input type="text" id="date-range" placeholder="Select date range">
+</div>
+<div class="handle" id="handle">Pull Down</div>
+<div class="pull-down-list" id="pull-down-list">
+    <div id="bulletin-list"></div>
+</div>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
+<script src="{{ url_for('static', filename='js/leaflet.extra-markers.min.js')}}"></script>
+<script src="{{ url_for('static', filename='js/categoryMarkers.js')}}"></script>
+<script src="{{ url_for('static', filename='js/categoryTranslations.js')}}"></script>
+<script>
+    var macedoniaBounds = [
+        [40.7536, 20.3645], // South-West
+        [42.4615, 23.0574]  // North-East
+    ];
+
+    var map = L.map('map', {
+        center: [41.6086, 21.7453], // Centered on North Macedonia
+        zoom: 8,
+        maxBounds: macedoniaBounds,
+        maxBoundsViscosity: 1.0
+    });
+
+    var streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+    });
+
+    var aerialLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        maxZoom: 17,
+        attribution: '&copy; OpenTopoMap contributors'
+    });
+
+    var Esri_WorldImageryLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    });
+
+    var baseLayers = {
+        "Street View": streetLayer,
+        "Aerial View": aerialLayer,
+        "Esri_World": Esri_WorldImageryLayer
+    };
+
+    streetLayer.addTo(map);
+
+    // Create a marker cluster group
+    var markers = L.markerClusterGroup();
+
+    function parseDate(dateStr) {
+        return moment(dateStr, 'DD.MM.YYYY').toDate();
+    }
+
+    // function loadBulletins(searchString, startDate, endDate) {
+    //     markers.clearLayers();
+    //     document.getElementById('bulletin-list').innerHTML = '';
+    //     fetch('/api/bulletins')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             data.forEach(bulletin => {
+    //                 var bulletinDate = parseDate(bulletin.date);
+    //                 // if (
+    //                 //     (!searchString || bulletin.location.toLowerCase().includes(searchString) || bulletin.description.toLowerCase().includes(searchString)) &&
+    //                 //     (!startDate || !endDate || (bulletinDate >= startDate && bulletinDate <= endDate))
+    //                 // ) {
+    //                     var marker = L.marker([bulletin.latitude, bulletin.longitude])
+    //                         .bindPopup(`<b>${bulletin.location}</b><br>${bulletin.description}`);
+    //                     markers.addLayer(marker);
+    //
+    //                     // Add bulletin to list
+    //                     var listItem = document.createElement('div');
+    //                     listItem.className = 'list-item';
+    //                     listItem.innerHTML = `<b>${bulletin.location}</b><br>${bulletin.description}<br><small>${bulletin.date}</small>`;
+    //                     document.getElementById('bulletin-list').appendChild(listItem);
+    //                 // }
+    //             });
+    //             map.addLayer(markers);
+    //         });
+    // }
+    //
+    // var categoryMarkers = {
+    //     "Drug-related Crime": L.ExtraMarkers.icon({
+    //         icon: 'fa-pills',
+    //         markerColor: 'red',
+    //         shape: 'square',
+    //         prefix: 'fa'
+    //     }),
+    //     "Traffic Incident": L.ExtraMarkers.icon({icon: 'fa-car', markerColor: 'orange', shape: 'circle', prefix: 'fa'}),
+    //     "Animal Incident": L.ExtraMarkers.icon({icon: 'fa-paw', markerColor: 'green', shape: 'star', prefix: 'fa'}),
+    //     "Corruption": L.ExtraMarkers.icon({
+    //         icon: 'fa-balance-scale',
+    //         markerColor: 'blue',
+    //         shape: 'square',
+    //         prefix: 'fa'
+    //     }),
+    //     // Add more mappings for other categories...
+    //     "Obstruction of Justice": L.ExtraMarkers.icon({
+    //         icon: 'fa-gavel',
+    //         markerColor: 'black',
+    //         shape: 'circle',
+    //         prefix: 'fa'
+    //     })
+    // };
+
+
+        function loadBulletins(searchString, startDate, endDate) {
+            markers.clearLayers();
+            document.getElementById('bulletin-list').innerHTML = '';
+            fetch('/api/bulletins')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(bulletin => {
+                        if (bulletin.latitude == null || bulletin.longitude == null) {
+                            // Skip this bulletin if latitude or longitude is null
+                            return;
+                        }
+                        var bulletinDate = parseDate(bulletin.date);
+                        var markerIcon = categoryMarkers[bulletin.category] || L.ExtraMarkers.icon({ icon: 'fa-question', markerColor: 'gray', shape: 'circle', prefix: 'fa' });
+
+                        var translatedCategory = categoryTranslations[bulletin.category] || bulletin.category;
+
+                        var marker = L.marker([bulletin.latitude, bulletin.longitude], { icon: markerIcon })
+                            .bindPopup(`<b>${bulletin.location}</b><br>${bulletin.description}<br><small>${translatedCategory}</small>`);
+                        markers.addLayer(marker);
+
+                        // Add bulletin to list
+                        var listItem = document.createElement('div');
+                        listItem.className = 'list-item';
+                        listItem.innerHTML = `<b>${bulletin.location}</b><br>${bulletin.description}<br><small>${bulletin.date}</small>`;
+                        document.getElementById('bulletin-list').appendChild(listItem);
+                    });
+                    map.addLayer(markers);
+                });
+        }
+
+    // Initial load
+    loadBulletins();
+
+    L.control.layers(baseLayers).addTo(map);
+
+    // Search functionality
+    document.getElementById('search').addEventListener('input', function (e) {
+        var searchString = e.target.value.toLowerCase();
+        var dateRange = flatpickrInstance.selectedDates;
+        loadBulletins(searchString, dateRange[0], dateRange[1]);
+    });
+
+    // Date picker functionality
+    var flatpickrInstance = flatpickr("#date-range", {
+        mode: "range",
+        dateFormat: "d.m.Y",
+        defaultDate: [new Date(), new Date()],
+        maxDate: "today",
+        onChange: function (selectedDates) {
+            var searchString = document.getElementById('search').value.toLowerCase();
+            loadBulletins(searchString, selectedDates[0], selectedDates[1]);
+        }
+    });
+
+    // Restrict view to North Macedonia
+    map.fitBounds(macedoniaBounds);
+
+    // Handle pull down functionality
+    document.getElementById('handle').addEventListener('click', function () {
+        var listElement = document.getElementById('pull-down-list');
+        listElement.classList.toggle('active');
+    });
+</script>
+</body>
+</html>
