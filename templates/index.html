@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Police Bulletins</title>
-    <!--    "{{ url_for('static', filename='asdf.css')}}"-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.extra-markers.min.css')}}">
+    <title>Полициски билтени</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.extra-markers.min.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 
     <style>
@@ -38,11 +36,29 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
             display: flex;
             gap: 10px;
+            flex-wrap: nowrap; /* Ensure they stay side by side on larger screens */
+            justify-content: center;
         }
 
         .controls-container input {
             padding: 5px;
             font-family: 'Roboto', sans-serif;
+            flex: 1; /* Allows the inputs to take available space equally */
+            min-width: 150px; /* Minimum width to ensure readability on small screens */
+            box-sizing: border-box;
+        }
+
+        @media (max-width: 600px) {
+            .controls-container {
+                flex-wrap: wrap;
+                width: 100%; /* Ensure the controls container takes full width on mobile */
+                padding: 5px;
+            }
+
+            .controls-container input {
+                flex: 1 1 100%; /* Allow the inputs to take full width */
+                margin-bottom: 10px; /* Space between input fields */
+            }
         }
 
         .flatpickr-calendar {
@@ -77,64 +93,58 @@
             color: #fff;
         }
 
-        .pull-down-list {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 50%;
-            max-height: 80%;
-            overflow-y: auto;
-            background: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            transform: translateY(-100%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .pull-down-list.active {
-            transform: translateY(0);
-        }
-
-        .list-item {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .handle {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 50%;
-            height: 20px;
-            background: #ff7800;
+        /* Updated Toast Notification Styles */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
             text-align: center;
-            color: white;
-            cursor: pointer;
+            border-radius: 12px;
+            padding: 16px;
+            position: fixed;
             z-index: 1001;
+            left: 50%;
+            bottom: 20px;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 17px;
+        }
+
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein {
+            from {bottom: 10px; opacity: 0;}
+            to {bottom: 20px; opacity: 1;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 20px; opacity: 1;}
+            to {bottom: 10px; opacity: 0;}
         }
     </style>
 </head>
 <body>
 <div class="controls-container">
-    <input type="text" id="search" placeholder="Search bulletins...">
-    <input type="text" id="date-range" placeholder="Select date range">
-</div>
-<div class="handle" id="handle">Pull Down</div>
-<div class="pull-down-list" id="pull-down-list">
-    <div id="bulletin-list"></div>
+    <input type="text" id="search" placeholder="Пребарувај билтени...">
+    <input type="text" id="date-range" placeholder="Изберете временски опсег">
 </div>
 <div id="map"></div>
+
+<!-- Toast Notification -->
+<div id="toast">Не се пронајдени билтени за избраните критериуми за пребарување.</div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment/min/moment.min.js"></script>
-<script src="{{ url_for('static', filename='js/leaflet.extra-markers.min.js')}}"></script>
-<script src="{{ url_for('static', filename='js/categoryMarkers.js')}}"></script>
-<script src="{{ url_for('static', filename='js/categoryTranslations.js')}}"></script>
+<script src="{{ url_for('static', filename='js/leaflet.extra-markers.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/categoryMarkers.js') }}"></script>
+<script src="{{ url_for('static', filename='js/categoryTranslations.js') }}"></script>
 <script>
     var macedoniaBounds = [
         [40.7536, 20.3645], // South-West
@@ -177,107 +187,80 @@
         return moment(dateStr, 'DD.MM.YYYY').toDate();
     }
 
-    // function loadBulletins(searchString, startDate, endDate) {
-    //     markers.clearLayers();
-    //     document.getElementById('bulletin-list').innerHTML = '';
-    //     fetch('/api/bulletins')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             data.forEach(bulletin => {
-    //                 var bulletinDate = parseDate(bulletin.date);
-    //                 // if (
-    //                 //     (!searchString || bulletin.location.toLowerCase().includes(searchString) || bulletin.description.toLowerCase().includes(searchString)) &&
-    //                 //     (!startDate || !endDate || (bulletinDate >= startDate && bulletinDate <= endDate))
-    //                 // ) {
-    //                     var marker = L.marker([bulletin.latitude, bulletin.longitude])
-    //                         .bindPopup(`<b>${bulletin.location}</b><br>${bulletin.description}`);
-    //                     markers.addLayer(marker);
-    //
-    //                     // Add bulletin to list
-    //                     var listItem = document.createElement('div');
-    //                     listItem.className = 'list-item';
-    //                     listItem.innerHTML = `<b>${bulletin.location}</b><br>${bulletin.description}<br><small>${bulletin.date}</small>`;
-    //                     document.getElementById('bulletin-list').appendChild(listItem);
-    //                 // }
-    //             });
-    //             map.addLayer(markers);
-    //         });
-    // }
-    //
-    // var categoryMarkers = {
-    //     "Drug-related Crime": L.ExtraMarkers.icon({
-    //         icon: 'fa-pills',
-    //         markerColor: 'red',
-    //         shape: 'square',
-    //         prefix: 'fa'
-    //     }),
-    //     "Traffic Incident": L.ExtraMarkers.icon({icon: 'fa-car', markerColor: 'orange', shape: 'circle', prefix: 'fa'}),
-    //     "Animal Incident": L.ExtraMarkers.icon({icon: 'fa-paw', markerColor: 'green', shape: 'star', prefix: 'fa'}),
-    //     "Corruption": L.ExtraMarkers.icon({
-    //         icon: 'fa-balance-scale',
-    //         markerColor: 'blue',
-    //         shape: 'square',
-    //         prefix: 'fa'
-    //     }),
-    //     // Add more mappings for other categories...
-    //     "Obstruction of Justice": L.ExtraMarkers.icon({
-    //         icon: 'fa-gavel',
-    //         markerColor: 'black',
-    //         shape: 'circle',
-    //         prefix: 'fa'
-    //     })
-    // };
+    function showToast(message) {
+        var toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.className = "show";
+        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+    }
 
+    function loadBulletins(searchString = '', startDate = null, endDate = null) {
+        // Clear existing markers
+        markers.clearLayers();
 
-        function loadBulletins(searchString, startDate, endDate) {
-            markers.clearLayers();
-            document.getElementById('bulletin-list').innerHTML = '';
-            fetch('/api/bulletins')
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(bulletin => {
-                        if (bulletin.latitude == null || bulletin.longitude == null) {
-                            // Skip this bulletin if latitude or longitude is null
-                            return;
-                        }
-                        var bulletinDate = parseDate(bulletin.date);
-                        var markerIcon = categoryMarkers[bulletin.category] || L.ExtraMarkers.icon({ icon: 'fa-question', markerColor: 'gray', shape: 'circle', prefix: 'fa' });
-
-                        var translatedCategory = categoryTranslations[bulletin.category] || bulletin.category;
-
-                        var marker = L.marker([bulletin.latitude, bulletin.longitude], { icon: markerIcon })
-                            .bindPopup(`<b>${bulletin.location}</b><br>${bulletin.description}<br><small>${translatedCategory}</small>`);
-                        markers.addLayer(marker);
-
-                        // Add bulletin to list
-                        var listItem = document.createElement('div');
-                        listItem.className = 'list-item';
-                        listItem.innerHTML = `<b>${bulletin.location}</b><br>${bulletin.description}<br><small>${bulletin.date}</small>`;
-                        document.getElementById('bulletin-list').appendChild(listItem);
-                    });
-                    map.addLayer(markers);
-                });
+        // Construct the API URL with search and date filters
+        let url = `/api/bulletins?search=${encodeURIComponent(searchString)}`;
+        if (startDate && endDate) {
+            url += `&start_date=${startDate.toISOString().split('T')[0]}&end_date=${endDate.toISOString().split('T')[0]}`;
         }
+
+        // Fetch the filtered bulletins
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) {
+                    showToast("Не се пронајдени билтени за избраните критериуми за пребарување.");
+                }
+
+                data.forEach(bulletin => {
+                    if (bulletin.latitude == null || bulletin.longitude == null) {
+                        return;
+                    }
+
+                    var markerIcon = categoryMarkers[bulletin.category] || L.ExtraMarkers.icon({
+                        icon: 'fa-question',
+                        markerColor: 'gray',
+                        shape: 'circle',
+                        prefix: 'fa'
+                    });
+
+                    var translatedCategory = categoryTranslations[bulletin.category] || bulletin.category;
+
+                    // Create a marker and add it to the cluster group
+                    var marker = L.marker([bulletin.latitude, bulletin.longitude], {icon: markerIcon})
+                        .bindPopup(`<b>${bulletin.location}</b><br>${bulletin.description}<br><small>${translatedCategory}</small>`);
+                    markers.addLayer(marker);
+                });
+
+                // Add the updated marker cluster group to the map
+                map.addLayer(markers);
+            })
+            .catch(error => {
+                console.error('Error fetching bulletins:', error);
+            });
+    }
 
     // Initial load
     loadBulletins();
 
-    L.control.layers(baseLayers).addTo(map);
+    // Function to handle search input events
+    function handleSearchInput(e) {
+        if (e.type === 'keydown' && e.key === 'Enter') {
+            var searchString = e.target.value.toLowerCase();
+            var dateRange = flatpickrInstance.selectedDates;
+            loadBulletins(searchString, dateRange[0], dateRange[1]);
+        }
+    }
 
-    // Search functionality
-    document.getElementById('search').addEventListener('input', function (e) {
-        var searchString = e.target.value.toLowerCase();
-        var dateRange = flatpickrInstance.selectedDates;
-        loadBulletins(searchString, dateRange[0], dateRange[1]);
-    });
+    // Attach event listener for the Enter key
+    document.getElementById('search').addEventListener('keydown', handleSearchInput);
 
-    // Date picker functionality
+    // Initialize flatpickr with the onClose event to handle date picker close
     var flatpickrInstance = flatpickr("#date-range", {
         mode: "range",
         dateFormat: "d.m.Y",
-        defaultDate: [new Date(), new Date()],
         maxDate: "today",
-        onChange: function (selectedDates) {
+        onClose: function (selectedDates) {
             var searchString = document.getElementById('search').value.toLowerCase();
             loadBulletins(searchString, selectedDates[0], selectedDates[1]);
         }
@@ -286,11 +269,7 @@
     // Restrict view to North Macedonia
     map.fitBounds(macedoniaBounds);
 
-    // Handle pull down functionality
-    document.getElementById('handle').addEventListener('click', function () {
-        var listElement = document.getElementById('pull-down-list');
-        listElement.classList.toggle('active');
-    });
+    L.control.layers(baseLayers).addTo(map);
 </script>
 </body>
 </html>
