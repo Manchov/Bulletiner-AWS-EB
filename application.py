@@ -28,7 +28,7 @@ app = application
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return 'Hello World!'
+    return 'If you are reading this, there is a miss config with the WGSI!'
 
 
 if __name__ == '__main__':

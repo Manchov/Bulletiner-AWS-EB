@@ -1,11 +1,10 @@
 import os
-# from web import create_app
-from flask import Flask
+from flask import Flask,session
 
 
 def create_app():
     app = Flask(__name__)
-    # app.config.from_object('config.Config')
+    app.config.from_object('config')
 
     # db.init_app(app)
 
@@ -20,6 +19,7 @@ def create_app():
         # Create database tables for our data models
         # db.create_all()
 
+
     return app
 
 
@@ -27,5 +27,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 application = create_app()
 app = application
+
+app.secret_key = os.urandom(24)
+
 if __name__ == '__main__':
     app.run(debug=True)
