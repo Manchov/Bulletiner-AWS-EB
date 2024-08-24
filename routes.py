@@ -2,7 +2,7 @@ from flask import render_template, jsonify, request
 from flask import current_app as app
 from datetime import datetime
 
-from service import get_bulletins, load_full_bulletins_from_db
+from service import get_bulletins
 
 
 @app.route('/')

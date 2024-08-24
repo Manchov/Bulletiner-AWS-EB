@@ -1,34 +1,30 @@
 import os
-from flask import Flask,session
+from flask import Flask, session
+from config import Config
 
-
-def create_app():
+def create_app(config_class):
     app = Flask(__name__)
-    app.config.from_object('config')
-
-    # db.init_app(app)
+    app.config.from_object(config_class)
 
     with app.app_context():
         # Import parts of our application
-        # from . import routes  # This should ensure routes are registered
+        # This should ensure routes are registered
         import routes
 
         # Print registered routes for debugging
         print(app.url_map)
-
-        # Create database tables for our data models
-        # db.create_all()
-
 
     return app
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-application = create_app()
+# EB [must] search for "application" variable in app.py therefore app = application
+application = create_app(Config)
 app = application
 
+# Future use for sessions
 app.secret_key = os.urandom(24)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

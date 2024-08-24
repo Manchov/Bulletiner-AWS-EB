@@ -117,20 +117,32 @@
         }
 
         @keyframes fadein {
-            from {bottom: 10px; opacity: 0;}
-            to {bottom: 20px; opacity: 1;}
+            from {
+                bottom: 10px;
+                opacity: 0;
+            }
+            to {
+                bottom: 20px;
+                opacity: 1;
+            }
         }
 
         @keyframes fadeout {
-            from {bottom: 20px; opacity: 1;}
-            to {bottom: 10px; opacity: 0;}
+            from {
+                bottom: 20px;
+                opacity: 1;
+            }
+            to {
+                bottom: 10px;
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
 <div class="controls-container">
-    <input type="text" id="search" placeholder="Пребарувај билтени...">
-    <input type="text" id="date-range" placeholder="Изберете временски опсег">
+    <label for="search"></label><input type="text" id="search" placeholder="Пребарувај билтени...">
+    <label for="date-range"></label><input type="text" id="date-range" placeholder="Изберете временски опсег">
 </div>
 <div id="map"></div>
 
@@ -175,7 +187,7 @@
     var baseLayers = {
         "Street View": streetLayer,
         "Aerial View": aerialLayer,
-        "Esri_World": Esri_WorldImageryLayer
+        "Esri World": Esri_WorldImageryLayer
     };
 
     streetLayer.addTo(map);
@@ -191,7 +203,9 @@
         var toast = document.getElementById("toast");
         toast.textContent = message;
         toast.className = "show";
-        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        setTimeout(function () {
+            toast.className = toast.className.replace("show", "");
+        }, 3000);
     }
 
     function loadBulletins(searchString = '', startDate = null, endDate = null) {
@@ -270,6 +284,7 @@
     map.fitBounds(macedoniaBounds);
 
     L.control.layers(baseLayers).addTo(map);
+
 </script>
 </body>
 </html>

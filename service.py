@@ -1,11 +1,13 @@
-from database import service_db
-
 from datetime import datetime
 
-def get_bulletins(search_string=None, start_date=None, end_date=None):
+from database import service_db
 
+
+def get_bulletins(search_string=None, start_date=None, end_date=None):
     bulletins_list = []
     search_string_lower = search_string.lower() if search_string else None
+
+    print(f"start_date:{start_date} , end_date: {end_date}")
 
     for bulletin in bulletins:
         bulletin_date_str = bulletin['date']

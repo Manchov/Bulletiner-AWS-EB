@@ -2,16 +2,10 @@ import sqlite3
 from datetime import datetime
 import re
 
-# def connect_database():
-#     return sqlite3.connect('bulletins.db')
-def custom_collation(str1, str2):
-    return (str1.lower() > str2.lower()) - (str1.lower() < str2.lower())
-
 
 def get_database(query, params=None):
     # Connect to the SQLite database
     conn = sqlite3.connect('database/bulletins.db')
-    # conn.create_collation("NOCASE_CYRILLIC", custom_collation)
     cursor = conn.cursor()
 
     # Execute the query with parameters
@@ -104,7 +98,8 @@ def get_scraped_ids():
 def fetch_unprocessed_bulletins():
     conn = sqlite3.connect('../database/bulletins.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT id, post_id, post_number, date, description FROM bulletins_raw WHERE processed = 0 ORDER BY post_id DESC")
+    cursor.execute(
+        "SELECT id, post_id, post_number, date, description FROM bulletins_raw WHERE processed = 0 ORDER BY post_id DESC")
     bulletins = cursor.fetchall()
     conn.close()
     return bulletins
