@@ -141,13 +141,17 @@
 </head>
 <body>
 <div class="controls-container">
-    <label for="search"></label><input type="text" id="search" placeholder="Пребарувај билтени...">
-    <label for="date-range"></label><input type="text" id="date-range" placeholder="Изберете временски опсег">
+    <label for="search"></label>
+    <input type="text" id="search" placeholder="Пребарувај билтени...">
+    <label for="date-range"></label>
+    <input type="text" id="date-range" placeholder="Изберете временски опсег">
 </div>
 <div id="map"></div>
 
 <!-- Toast Notification -->
 <div id="toast">Не се пронајдени билтени за избраните критериуми за пребарување.</div>
+<!-- Loading Notification -->
+<div id="loading" style="display:none;">Loading...</div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
@@ -163,7 +167,7 @@
         [42.4615, 23.0574]  // North-East
     ];
 
-    var map = L.map('map', {
+    const map = L.map('map', {
         center: [41.6086, 21.7453], // Centered on North Macedonia
         zoom: 8,
         maxBounds: macedoniaBounds,
@@ -208,6 +212,12 @@
         }, 3000);
     }
 
+    /**
+     * Fetches and displays bulletins on the map based on search criteria.
+     * @param {string} searchString - The search query entered by the user.
+     * @param {Date} startDate - The start date of the date range filter.
+     * @param {Date} endDate - The end date of the date range filter.
+     */
     function loadBulletins(searchString = '', startDate = null, endDate = null) {
         // Clear existing markers
         markers.clearLayers();
@@ -217,10 +227,16 @@
         if (startDate && endDate) {
             url += `&start_date=${startDate.toISOString().split('T')[0]}&end_date=${endDate.toISOString().split('T')[0]}`;
         }
+        document.getElementById('loading').style.display = 'block';
 
         // Fetch the filtered bulletins
         fetch(url)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.statusText}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.length === 0) {
                     showToast("Не се пронајдени билтени за избраните критериуми за пребарување.");
@@ -251,11 +267,16 @@
             })
             .catch(error => {
                 console.error('Error fetching bulletins:', error);
+                showToast('Грешка при преземањето на билтените.');
+            })
+            .finally(() => {
+                document.getElementById('loading').style.display = 'none';
             });
     }
 
     // Initial load
     loadBulletins();
+
 
     // Function to handle search input events
     function handleSearchInput(e) {
