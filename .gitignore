@@ -51,6 +51,10 @@ coverage.xml
 .pytest_cache/
 cover/
 
+
+# Ignore local config
+config_local.py
+
 # Translations
 *.mo
 *.pot
@@ -161,8 +165,10 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 /dataservice/
-/database/id_fixer.py
-/database/duplicates_remover.py
-/database/cord_updater.py
-/database/year_reformater.py
+/database/scripts/id_fixer.py
+/database/scripts/duplicates_remover.py
+/database/scripts/cord_updater.py
+/database/scripts/year_reformater.py
 /web/
+/reminder.txt
+/cloudshell-info-instances.txt

@@ -1,10 +1,14 @@
 import os
 from flask import Flask, session
 from config import Config
+from database import db  # Import db from database package
 
 def create_app(config_class):
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    # Initialize the db with the app
+    db.init_app(app)
 
     with app.app_context():
         # Import parts of our application
@@ -27,4 +31,6 @@ app = application
 app.secret_key = os.urandom(24)
 
 if __name__ == '__main__':
+    os.environ['SECRET_KEY'] = 'A49EC6FA998C4767326AA751BCFF7'
+    os.environ['DATABASE_URL'] = 'postgresql+psycopg2://bulletiner:p0l1c3p455!@bulletiner-db.cva8m0s4ecfa.eu-central-1.rds.amazonaws.com:5432/postgres'
     app.run(debug=False)

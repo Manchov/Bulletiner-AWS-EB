@@ -1,44 +1,36 @@
 from datetime import datetime
 
 from database import service_db
-
+from database.models import BulletinProcessed
 
 def get_bulletins(search_string=None, start_date=None, end_date=None):
+    query = BulletinProcessed.query
+
+    if start_date and end_date:
+        query = query.filter(BulletinProcessed.date.between(start_date, end_date))
+
+    if search_string:
+        query = query.filter(BulletinProcessed.description.ilike(f'%{search_string}%'))
+
+    bulletins = query.all()
+
     bulletins_list = []
-    search_string_lower = search_string.lower() if search_string else None
-
-    print(f"start_date:{start_date} , end_date: {end_date}")
-
     for bulletin in bulletins:
-        bulletin_date_str = bulletin['date']
-
-        # Check if the date is None or null
-        if bulletin_date_str is None:
-            continue  # Skip records with no date
-
-        # Convert the date string from 'YYYY-MM-DD' to a datetime object
-        try:
-            bulletin_date = datetime.strptime(bulletin_date_str, '%Y-%m-%d')
-        except ValueError:
-            continue  # Skip records with invalid date format
-
-        # Perform date filtering in Python
-        if start_date and end_date:
-            if not (start_date <= bulletin_date <= end_date):
-                continue
-
-        # Perform case-insensitive filtering in Python for the search string
-        if search_string_lower and search_string_lower not in bulletin['description'].lower():
-            continue
-
-        bulletins_list.append(bulletin)
+        bulletins_list.append({
+            'date': bulletin.date.strftime('%Y-%m-%d') if bulletin.date else None,
+            'description': bulletin.description,
+            'location': bulletin.location,
+            'latitude': bulletin.latitude,
+            'longitude': bulletin.longitude,
+            'category': bulletin.category
+        })
 
     return bulletins_list
 
-
 def load_full_bulletins_from_db():
     query = "SELECT date, description, location, latitude, longitude, category FROM bulletins"
-    bulletins = service_db.get_database(query)
+    # bulletins = service_db.get_database(query)
+    bulletins = query = BulletinProcessed.query
 
     bulletins_list = []
     for row in bulletins:
@@ -54,4 +46,4 @@ def load_full_bulletins_from_db():
     return bulletins_list
 
 
-bulletins = load_full_bulletins_from_db()
+# bulletins = load_full_bulletins_from_db()

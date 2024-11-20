@@ -2,15 +2,18 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-
 class Config:
+    # print(f"config loaded : {os.environ.get('DATABASE_URL')} :: {os.environ}")
     TESTING = False
-    # DATABASE_URI = 'sqlite:///bulletins.db'
-
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'your_default_secret_key')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class TestConfig(Config):
     TESTING = True
-    # DATABASE_URI = 'sqlite:///database/bulletins.db'  # Use an in-memory database for testing
 
-
-print("config opened and is empty, init for future uses")
+try:
+    from config_local import Config as LocalConfig
+    Config = LocalConfig
+except ImportError:
+    pass
