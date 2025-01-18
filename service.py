@@ -1,6 +1,4 @@
-from datetime import datetime
-
-from database import service_db
+# service.py
 from database.models import BulletinProcessed
 
 def get_bulletins(search_string=None, start_date=None, end_date=None):
@@ -19,9 +17,12 @@ def get_bulletins(search_string=None, start_date=None, end_date=None):
         bulletins_list.append({
             'date': bulletin.date.strftime('%Y-%m-%d') if bulletin.date else None,
             'description': bulletin.description,
-            'location': bulletin.location,
-            'latitude': bulletin.latitude,
-            'longitude': bulletin.longitude,
+            'location': bulletin.location_report,
+            'latitude': bulletin.lat_report,
+            'longitude': bulletin.lon_report,
+            'location_event':bulletin.location_event,
+            'latitude_event': bulletin.lat_event,
+            'longitude_event': bulletin.lon_event,
             'category': bulletin.category
         })
 

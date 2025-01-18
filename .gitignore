@@ -164,6 +164,7 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+/aws/
 /dataservice/
 /database/scripts/id_fixer.py
 /database/scripts/duplicates_remover.py
@@ -172,3 +173,4 @@ cython_debug/
 /web/
 /reminder.txt
 /cloudshell-info-instances.txt
+/bfg-1.14.0.jar
